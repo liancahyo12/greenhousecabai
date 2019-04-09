@@ -228,7 +228,7 @@ public class FirstFragment extends Fragment {
 
                         StringBuffer buffer = new StringBuffer();
                         while (res.moveToNext()) {
-                            //buffer.append("Id :"+ res.getString(0)+"\n");
+                            buffer.append("Id :"+ res.getString(0)+"\n");
                             buffer.append("Suhu :"+ res.getString(1)+"\n");
                             buffer.append("Humudity :"+ res.getString(2)+"\n");
                             buffer.append("Kelembapan Tanah :"+ res.getString(3)+"\n");
