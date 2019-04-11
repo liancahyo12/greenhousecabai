@@ -25,7 +25,7 @@
                     android:gravity="center"/>
                 <com.jjoe64.graphview.GraphView
                     android:id="@+id/chartsuhu"
-                    android:layout_width="405dp"
+                    android:layout_width="match_parent"
                     android:layout_height="370dp" />
             </LinearLayout>
             <LinearLayout
@@ -40,7 +40,7 @@
                     android:gravity="center"/>
                 <com.jjoe64.graphview.GraphView
                     android:id="@+id/charthmdt"
-                    android:layout_width="405dp"
+                    android:layout_width="match_parent"
                     android:layout_height="370dp" />
             </LinearLayout>
             <LinearLayout
@@ -55,7 +55,7 @@
                     android:gravity="center"/>
                 <com.jjoe64.graphview.GraphView
                     android:id="@+id/chartktanah"
-                    android:layout_width="405dp"
+                    android:layout_width="match_parent"
                     android:layout_height="370dp" />
             </LinearLayout>
         </LinearLayout>
