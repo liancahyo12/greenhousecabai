@@ -1,23 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFFFF"
+    android:id="@+id/grafik"
     android:orientation="vertical">
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabLayout"
+    <LinearLayout
+        android:id="@+id/barnduwur"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?actionBarSize"
-        app:tabGravity="fill"
-        app:tabIndicatorColor="#FFFFFFFF"
-        app:tabIndicatorHeight="4dp"
-        app:tabBackground="@color/colorPrimary"
-        app:tabMode="fixed">
-    </android.support.design.widget.TabLayout>
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+        android:orientation="horizontal"
+        android:elevation="10dp"
+        android:background="#ffffffff"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/grafik"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:text="Grafik"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="25sp" />
+    </LinearLayout>
+    <android.support.design.widget.TabLayout
+        android:layout_below="@+id/barnduwur"
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
-</LinearLayout>
+        android:layout_height="50dp"
+        android:layout_gravity="left"
+        android:background="#ffffffff"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:elevation="10dp"/>
+
+    <com.cahjaya.lian.greenhousecabai.FCViewPager
+        android:layout_below="@+id/tab_layout"
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+
+
+</RelativeLayout>

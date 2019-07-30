@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="70dp"
+        android:paddingTop="5dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/keltanah"
+        >
+        <TextView
+            android:id="@+id/legk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="□ Kelembapan Tanah %    □ Waktu Jam, Tanggal"
+            android:gravity="right"
+            android:paddingRight="5dp"/>
+        <com.jjoe64.graphview.GraphView
+            android:layout_below="@+id/legk"
+            android:id="@+id/chartktanah"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+        <android.support.design.widget.TabLayout
+            android:layout_below="@+id/chartktanah"
+            android:id="@+id/tab_layoutk"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            app:tabMaxWidth="80dp"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

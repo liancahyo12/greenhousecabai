@@ -1,19 +1,14 @@
 package com.cahjaya.lian.greenhousecabai;
 
-import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.nfc.Tag;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import net.igenius.mqttservice.MQTTService;
 import net.igenius.mqttservice.MQTTServiceCommand;
@@ -27,15 +22,17 @@ public class SplashActivity extends AppCompatActivity {
     String clientId = UUID.randomUUID().toString();
     String publishTopic = "sensor/+";
     String subscribeTopic = "sensor/+";
+    String subscribeTopic1 = "status/+";
     private int SLEEP_TIMER = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         MQTTService.NAMESPACE = "com.cahjaya.lian.greenhousecabai"; //or BuildConfig.APPLICATION_ID;
         MQTTService.KEEP_ALIVE_INTERVAL = 60; //in seconds
         MQTTService.CONNECT_TIMEOUT = 30; //in seconds
-        MQTTServiceCommand.connectAndSubscribe(this, server, clientId, username, password, 0, true, subscribeTopic);
+        MQTTServiceCommand.connectAndSubscribe(this, server, clientId, username, password, 0, true, subscribeTopic, subscribeTopic1);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 

@@ -8,7 +8,9 @@
     tools:context="com.cahjaya.lian.greenhousecabai.FirstFragment"
     tools:showIn="@layout/firstlayout"
     android:background="#FFFFFFFF">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,50 +24,44 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/temp"
                     android:layout_width="182dp"
                     android:layout_height="69dp"
                     android:fontFamily="monospace"
                     android:gravity="center"
-                    android:text="Temperature"/>
+                    android:text="Temperature"
+                    android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/tt"
                     android:layout_width="103dp"
                     android:layout_height="67dp"
                     android:fontFamily="monospace"
                     android:gravity="center"
-                    android:text="...."/>
+                    android:text="...."
+                    android:textSize="18sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center"
+                    android:text="°C"
+                    android:textSize="18sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/humid"
-                    android:layout_width="186dp"
-                    android:layout_height="69dp"
-                    android:fontFamily="monospace"
-                    android:gravity="center"
-                    android:text="Humidity"/>
 
-                <TextView
-                    android:id="@+id/th"
-                    android:layout_width="104dp"
-                    android:layout_height="63dp"
-                    android:fontFamily="monospace"
-                    android:gravity="center"
-                    android:text="...."/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/ktanahid"
                     android:layout_width="186dp"
                     android:layout_height="69dp"
                     android:fontFamily="monospace"
                     android:gravity="center"
-                    android:text="Kelembapan Tanah"/>
+                    android:text="Kelembapan Tanah"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/kt"
@@ -73,7 +69,15 @@
                     android:layout_height="63dp"
                     android:fontFamily="monospace"
                     android:gravity="center"
-                    android:text="...."/>
+                    android:text="...."
+                    android:textSize="18sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center"
+                    android:text="%"
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
         <Button
@@ -155,7 +159,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Kran"
+                        android:text="Pompa"
                         android:layout_marginLeft="7dp"/>
                     <Switch
                         android:id="@+id/kran"
@@ -166,4 +170,5 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+</ScrollView>
 </RelativeLayout>

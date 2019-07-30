@@ -1,27 +1,27 @@
 package com.cahjaya.lian.greenhousecabai;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.SystemClock;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
-import net.igenius.mqttservice.MQTTServiceCommand;
 import net.igenius.mqttservice.MQTTServiceReceiver;
 
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 import helpers.DataHelper;
 import helpers.DatabaseHelper;
 
-import static helpers.NotifHelper.CHANNEL_3_ID;
 import static helpers.NotifHelper.CHANNEL_2_ID;
 
 
@@ -29,13 +29,10 @@ public class MqttService extends MQTTServiceReceiver {
     private NotificationManagerCompat notificationManager;
     DataHelper data = new DataHelper();
     DatabaseHelper myDb;
-    Integer s = 0, kr = 0, ktt = 0;
+    Integer s = 0, ktt = 0, lp = 0, ks = 0, pp = 0;
     static int i = 3;
-    static boolean ok;
+    static boolean ok ,yes;
     private static final String TAG = "Receiver";
-    Random r1 = new Random();
-    Random r2 = new Random();
-    Random r3 = new Random();
     @Override
     public void onPublishSuccessful(Context context, String requestId, String topic) {
 
@@ -55,17 +52,33 @@ public class MqttService extends MQTTServiceReceiver {
     public void onMessageArrived(Context context, String topic, byte[] payload){
         notificationManager = NotificationManagerCompat.from(context);
         Log.e(TAG, "New message on " + topic + ":  " + new String(payload));
+        yes = false;
+        ok = false;
         if (topic.equals("sensor/suhu")) {
-            data.setSuhu(Float.parseFloat(new String(payload)));
+            data.setSuhu(Integer.parseInt(new String(payload)));
             s = (Integer.parseInt(new String(payload)));
-        }
-        if (topic.equals("sensor/hmdt")) {
-            data.setHmdt(Float.parseFloat(new String(payload)));
-            kr = (Integer.parseInt(new String(payload)));
+            if(s <= 23){
+                data.setTitle("Suhu terlalu rendah");
+                data.setMessage("Suhu : "+data.getSuhu());
+                ok = true;
+            }else if(s >= 29){
+                data.setTitle("Suhu terlalu tinggi");
+                data.setMessage("Suhu : "+data.getSuhu());
+                ok = true;
+            }
         }
         if (topic.equals("sensor/ktanah")) {
-            data.setKtanah(Float.parseFloat(new String(payload)));
+            data.setKtanah(Integer.parseInt(new String(payload)));
             ktt = (Integer.parseInt(new String(payload)));
+            if(ktt <= 59){
+                data.setTitle("Kelembapan tanah terlalu rendah");
+                data.setMessage("Kelembapan Tanah : "+data.getKtanah());
+                ok = true;
+            }else if(ktt >= 81){
+                data.setTitle("Kelembapan tanah terlalu tinggi");
+                data.setMessage("Kelembapan Tanah : "+data.getKtanah());
+                ok = true;
+            }
             masukdata(context);
         }
         if (topic.equals("sensor/lampu")){
@@ -80,10 +93,49 @@ public class MqttService extends MQTTServiceReceiver {
             data.setKran(Integer.parseInt(new String(payload)));
             masukdatac(context);
         }
-        ceksetdata();
-        notif(context);
-
-        //randomfakedata(context);
+        if (topic.equals("status/lampu")){
+            lp = (Integer.parseInt(new String(payload)));
+            if(lp == 1) {
+                data.setTitle("Status Lampu");
+                data.setMessage("Lampu Menyala");
+                ok = true;
+            }
+            if(lp ==0){
+                data.setTitle("Status Lampu");
+                data.setMessage("Lampu Mati");
+                ok = true;
+            }
+        }
+        if   (topic.equals("status/kipas")){
+            ks = (Integer.parseInt(new String(payload)));
+            if(ks == 1) {
+                data.setTitle("Status Kipas");
+                data.setMessage("Kipas Menyala");
+                ok = true;
+            }
+            if(ks ==0){
+                data.setTitle("Status Kipas");
+                data.setMessage("Kipas Mati");
+                ok = true;
+            }
+        }
+        if (topic.equals("status/kran")){
+            pp = (Integer.parseInt(new String(payload)));
+            if(pp == 1) {
+                data.setTitle("Status Pompa");
+                data.setMessage("Pompa Menyala");
+                ok = true;
+            }
+            if(pp ==0){
+                data.setTitle("Status Pompa");
+                data.setMessage("Pompa Mati");
+                ok = true;
+            }
+        }
+        createNotification(data.getMessage(),context);
+        //notif(context);
+        //notifakuator(context);
+        //createNotification2(data.getMessage(),context);
 
     }
 
@@ -104,13 +156,12 @@ public class MqttService extends MQTTServiceReceiver {
     private void masukdata(Context context){
         Calendar c = Calendar.getInstance();
         int m = c.get(Calendar.MINUTE);
-        if (m ==00 || m==01 || m==02 || m==59 || m==58) {
+        if (m < 05 || m > 55) {
             DatabaseHelper db = new DatabaseHelper(context);
-            Float yValue = data.getSuhu();
-            Float zValue = data.getHmdt();
-            Float zzValue = data.getKtanah();
+            int yValue = data.getSuhu();
+            int zzValue = data.getKtanah();
             long xValue = new Date().getTime();
-            boolean isInserted = db.insertData(yValue, zValue, zzValue, xValue);
+            boolean isInserted = db.insertData(yValue, zzValue, xValue);
             if (isInserted == true) {
                 Log.e("Debug", "Data Masuk");
             }
@@ -129,7 +180,7 @@ public class MqttService extends MQTTServiceReceiver {
     }
     private void notif(Context context){
         Intent notificationIntent = new Intent(context, MainActivity.class);
-
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(context, CHANNEL_2_ID)
@@ -140,6 +191,8 @@ public class MqttService extends MQTTServiceReceiver {
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setContentIntent(pendingIntent)
                 .setGroup("Data_Greenhouse_Cabai")
+                .setSound(uri)
+                .setAutoCancel(true)
                 .build();
         Notification summaryNotification = new NotificationCompat.Builder(context, CHANNEL_2_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -149,65 +202,55 @@ public class MqttService extends MQTTServiceReceiver {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setGroup("Data_Greenhouse_Cabai")
                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                .setContentIntent(pendingIntent)
                 .setGroupSummary(true)
+                .setAutoCancel(true)
                 .build();
         if (ok){
             notificationManager.notify(i++, notification);
             notificationManager.notify(2, summaryNotification);
         }
     }
-    public void ceksetdata(){
-        if(s == 0 && kr ==0 && ktt ==0){
-            ok=false;
+    private NotificationManager notifManager;
+    public void createNotification(String aMessage, Context context) {
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        String id = CHANNEL_2_ID; // default_channel_id
+        String title = "GreenhouseCabai"; // Default Channel
+        Intent intent;
+        PendingIntent pendingIntent;
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, id);
+        if (notifManager == null) {
+            notifManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         }
-        else if(s <= 23 && kr ==0 && ktt ==0){
-            data.setTitle("Suhu terlalu rendah");
-            data.setMessage("Suhu : "+data.getSuhu());
-            ok = true;
-        }else if(s >= 29 && kr ==0 && ktt ==0){
-            data.setTitle("Suhu terlalu tinggi");
-            data.setMessage("Suhu : "+data.getSuhu());
-            ok = true;
-        }else if(kr <= 59 && s == 0 && ktt == 0){
-            data.setTitle("Kelembapan ruang terlalu rendah");
-            data.setMessage("Kelembapan Ruang : "+data.getHmdt());
-            ok = true;
-        }else if(kr >= 81 && s == 0 && ktt == 0){
-            data.setTitle("Kelembapan ruang terlalu tinggi");
-            data.setMessage("Kelembapan Ruang : "+data.getHmdt());
-            ok = true;
-        }else if(ktt <= 59 && s == 0 && kr == 0){
-            data.setTitle("Kelembapan tanah terlalu rendah");
-            data.setMessage("Kelembapan Tanah : "+data.getKtanah());
-            ok = true;
-        }else if(ktt >= 81 && s == 0 && kr == 0){
-            data.setTitle("Kelembapan tanah terlalu tinggi");
-            data.setMessage("Kelembapan Tanah : "+data.getKtanah());
-            ok = true;
-        }else {
-            ok=false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = notifManager.getNotificationChannel(id);
+            if (mChannel == null) {
+                mChannel = new NotificationChannel(id, title, importance);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                notifManager.createNotificationChannel(mChannel);
+            }
+            intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            builder.setContentTitle(data.getTitle())                            // required
+                    .setSmallIcon(R.mipmap.ic_launcher)   // required
+                    .setContentText(aMessage) // required
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .setTicker(aMessage)
+                    .setSound(uri);
+            if (ok) {
+                Notification notification = builder.build();
+                notifManager.notify(i++, notification);;
+            }
         }
-    }
-    public void randomfakedata(Context context){
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        else {
+            notif(context);
         }
-        int sh = r1.nextInt(11);
-        sh += 20;
-        String shs = Integer.toString(sh);
-        byte[] payload1 =  shs.getBytes();
-        int sh1 = r2.nextInt(40);
-        sh1 += 50;
-        String shs1 = Integer.toString(sh1);
-        byte[] payload2 =  shs1.getBytes();
-        int sh2 = r3.nextInt(40);
-        sh2 += 50;
-        String shs2 = Integer.toString(sh2);
-        byte[] payload3 =  shs2.getBytes();
-        MQTTServiceCommand.publish(context, "sensor/suhu", payload1);
-        MQTTServiceCommand.publish(context, "sensor/hmdt", payload2);
-        MQTTServiceCommand.publish(context, "sensor/ktanah", payload3);
+
     }
 }

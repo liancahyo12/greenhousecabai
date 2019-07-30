@@ -4,4 +4,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="about1">Aplikasi ini dibuat untuk memenuhi tugas akhir sebagai syarat menyelesaikan studi di Departemen Teknik Komputer, dimana aplikasi berfungsi memonitoring dan mengontrol alat Sistem Monitoring dan Otomasi Greenhouse untuk Budidaya Tanaman Cabai dengan protokol MQTT. </string>
+    <string name="about3">Aplikasi Greenhouse Cabai dibuat Oleh Lian Cahyo Wijaya (21120115120001) Mahasiswa Strata Satu  Departemen Teknik Komputer  Fakultas Teknik, Universitas Diponegoro, Semarang.</string>
+    <string name="home">Greenhouse</string>
+    <string name="search">Grafik</string>
+    <string name="favorite">Pengaturan</string>
+    <string name="account">Account</string>
+
 </resources>

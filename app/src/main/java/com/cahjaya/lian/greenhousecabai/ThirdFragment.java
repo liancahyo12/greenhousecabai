@@ -1,10 +1,12 @@
 package com.cahjaya.lian.greenhousecabai;
-import android.app.Fragment;
+
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +37,7 @@ import jxl.write.WritableWorkbook;
 public class ThirdFragment extends Fragment {
     Button backup;
     Button restore;
-    Button simpan;
+    Button simpan, aboutt;
     Switch serv;
     View myView;
     protected Cursor cursor;
@@ -46,7 +48,7 @@ public class ThirdFragment extends Fragment {
 
 
     private File sd = Environment.getExternalStorageDirectory();
-    private String  csvFile = "myData.xls";
+    private String  csvFile = "DataGreenhouseCabai.xls";
 
     private File directory = new File(sd.getAbsolutePath());
     private static String DB_PATH = "/data/data/com.cahjaya.lian.greenhousecabai/databases/";
@@ -58,6 +60,15 @@ public class ThirdFragment extends Fragment {
         dbHelper = new DatabaseHelper(getActivity());
         final Cursor cursor = dbHelper.getAllData();
         backup = (Button)myView.findViewById(R.id.backup);
+        aboutt=(Button)myView.findViewById(R.id.aboutt);
+        aboutt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(),AboutActivity.class);
+                startActivity(i);
+
+            }
+        });
         backup.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View arg0) {
@@ -94,7 +105,7 @@ public class ThirdFragment extends Fragment {
                                 myOutput.flush();
                                 myOutput.close();
                                 myInput.close();
-                                Toast.makeText(getActivity().getApplicationContext(), "Berhasil tersimpan di sdcard/Greenhouse Cabai/ghc.db", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity().getApplicationContext(), "Berhasil tersimpan di sdcard/ghc.db", Toast.LENGTH_LONG).show();
                             } catch (Exception e) {
                                 // TODO Auto-generated catch block
                                 Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -155,7 +166,7 @@ public class ThirdFragment extends Fragment {
                                     //finish();
                                 } catch (Exception e) {
                                     // TODO Auto-generated catch block
-                                    Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity().getApplicationContext(), "pastikan file berada di /sdcard/ghc.db", Toast.LENGTH_LONG).show();
                                     e.printStackTrace();
                                 }
                                 break;
@@ -200,24 +211,21 @@ public class ThirdFragment extends Fragment {
                                     // column and row
                                     sheet.addCell(new Label(0, 0, "ID"));
                                     sheet.addCell(new Label(1, 0, "Suhu"));
-                                    sheet.addCell(new Label(2, 0, "Kelembapan Ruang"));
-                                    sheet.addCell(new Label(3, 0, "Kelembapan Tanah"));
-                                    sheet.addCell(new Label(4, 0, "Tanggal"));
+                                    sheet.addCell(new Label(2, 0, "Kelembapan Tanah"));
+                                    sheet.addCell(new Label(3, 0, "Waktu"));
 
                                     if (cursor.moveToFirst()) {
                                         do {
                                             String id = cursor.getString(cursor.getColumnIndex("ID"));
                                             String suhu = cursor.getString(cursor.getColumnIndex("SUHU"));
-                                            String hmdt = cursor.getString(cursor.getColumnIndex("HMDT"));
                                             String ktanah = cursor.getString(cursor.getColumnIndex("KTANAH"));
                                             Long date = cursor.getLong(cursor.getColumnIndex("DATE"));
 
                                             int i = cursor.getPosition() + 1;
                                             sheet.addCell(new Label(0, i, id));
                                             sheet.addCell(new Label(1, i, suhu));
-                                            sheet.addCell(new Label(2, i, hmdt));
-                                            sheet.addCell(new Label(3, i, ktanah));
-                                            sheet.addCell(new Label(4, i, sdf.format(new Date((long)date))));
+                                            sheet.addCell(new Label(2, i, ktanah));
+                                            sheet.addCell(new Label(3, i, sdf.format(new Date((long)date))));
                                         } while (cursor.moveToNext());
                                     }
 
@@ -226,7 +234,7 @@ public class ThirdFragment extends Fragment {
                                     workbook.write();
                                     workbook.close();
                                     Toast.makeText(getActivity().getApplication(),
-                                            "Data Exported in a Excel Sheet", Toast.LENGTH_SHORT).show();
+                                            "Data telah berhasil dieksport ke excel di sdcard/DataGreenhouseCabai.xls", Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                     // TODO Auto-generated catch block
                                     Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
