@@ -12,6 +12,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import net.igenius.mqttservice.MQTTServiceReceiver;
 
@@ -28,7 +29,6 @@ import static helpers.NotifHelper.CHANNEL_2_ID;
 public class MqttService extends MQTTServiceReceiver {
     private NotificationManagerCompat notificationManager;
     DataHelper data = new DataHelper();
-    DatabaseHelper myDb;
     Integer s = 0, ktt = 0, lp = 0, ks = 0, pp = 0;
     static int i = 3;
     static boolean ok ,yes;
@@ -151,6 +151,13 @@ public class MqttService extends MQTTServiceReceiver {
 
     @Override
     public void onConnectionStatus(Context context, boolean connected) {
+        if(connected){
+            Toast.makeText(context.getApplicationContext(), "Greenhouse Cabai Tersambung ke server", Toast.LENGTH_LONG).show();
+        }else if(!connected){
+            Toast.makeText(context.getApplicationContext(), "Greenhouse Cabai terputus dari server", Toast.LENGTH_LONG).show();
+            Toast.makeText(context.getApplicationContext(), "Greenhouse Cabai menyambungkan kembali ke server ......", Toast.LENGTH_LONG).show();
+        }
+
 
     }
     private void masukdata(Context context){
@@ -165,6 +172,7 @@ public class MqttService extends MQTTServiceReceiver {
             if (isInserted == true) {
                 Log.e("Debug", "Data Masuk");
             }
+            db.close();
         }
     }
     private void masukdatac(Context context){
@@ -177,6 +185,7 @@ public class MqttService extends MQTTServiceReceiver {
         if(isInserted==true) {
             Log.e("Debug", "Control Data Masuk");
         }
+        db.close();
     }
     private void notif(Context context){
         Intent notificationIntent = new Intent(context, MainActivity.class);
@@ -228,7 +237,7 @@ public class MqttService extends MQTTServiceReceiver {
             if (mChannel == null) {
                 mChannel = new NotificationChannel(id, title, importance);
                 mChannel.enableVibration(true);
-                mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                mChannel.setVibrationPattern(new long[]{100, 200});
                 notifManager.createNotificationChannel(mChannel);
             }
             intent = new Intent(context, MainActivity.class);

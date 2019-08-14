@@ -73,8 +73,8 @@ public class KelFrag extends Fragment {
                     sdfktanah=new SimpleDateFormat(  "HH, dd", Locale.getDefault());
                     resetktanah();
                 }else if(tabLayout.getSelectedTabPosition() == 1){
-                    graphViewktanah.getGridLabelRenderer().setNumHorizontalLabels(8);
-                    graphViewktanah.getViewport().setMinX(xktanah0-6048);
+                    graphViewktanah.getGridLabelRenderer().setNumHorizontalLabels(7);
+                    graphViewktanah.getViewport().setMinX(xktanah0-6000);
                     legkj.setText("□ Kelembapan Tanah %  □ Waktu Tanggal, Bulan");
                     sdfktanah=new SimpleDateFormat(  "dd, MMM", Locale.getDefault());
                     resetktanah();
@@ -119,6 +119,7 @@ public class KelFrag extends Fragment {
             dpktanah[i]=new DataPoint(cursor.getLong(0)/100000,cursor.getInt(1));
 
         }
+        cursor.close();
         return dpktanah;
     }
     public void chartkonf(){
@@ -152,6 +153,7 @@ public class KelFrag extends Fragment {
             xktanahx = res0.getLong(3) / 100000;
             // Do somethi
         }
+        res.close();
     }
     public void resetktanah(){
         graphViewktanah.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){

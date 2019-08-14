@@ -102,9 +102,10 @@ public class Mqttservforground extends Service {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("Service is running background")
-                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setPriority(NotificationManager.IMPORTANCE_LOW)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .setContentIntent(pendingIntent)
+                .setGroup("Service")
                 .build();
         startForeground(1, notification);
     }

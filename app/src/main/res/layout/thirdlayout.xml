@@ -34,6 +34,7 @@
             android:textSize="25sp" />
     </LinearLayout>
         <FrameLayout
+            android:id="@+id/bcg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
@@ -54,10 +55,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:elevation="7dp"
-                android:text="\nCadangkan basis data ke sdcard"
+                android:text="\nCadangkan data greenhouse offline ke sdcard"
                 android:paddingLeft="62.7dp"/>
         </FrameLayout>
         <FrameLayout
+            android:id="@+id/rsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -78,31 +80,33 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:elevation="7dp"
-                android:text="\nPulihkan basis data dari sdcard"
+                android:text="\nPulihkan data greenhouse offline dari sdcard"
                 android:paddingLeft="62.7dp"/>
         </FrameLayout>
         <FrameLayout
+            android:id="@+id/exg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
                 android:id="@+id/excel"
                 style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:backgroundTintMode="screen"
                 android:drawableLeft="@drawable/ic_xls"
                 android:text="Eksport\n"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:elevation="7dp"
-                android:text="\nEksport basis data menjadi excel ke sdcard"
-                android:paddingLeft="62.7dp"/>
+                android:text="\n\nDapatkan data pada bentuk excel untuk melihat data tabel greenhouse"
+                android:paddingLeft="62.7dp"
+                android:paddingBottom="5dp"/>
         </FrameLayout>
         <FrameLayout
             android:layout_width="match_parent"

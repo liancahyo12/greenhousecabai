@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private static final int PERMISSION_REQUEST_CODE = 200;
     private View view;
     ViewGroup flc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

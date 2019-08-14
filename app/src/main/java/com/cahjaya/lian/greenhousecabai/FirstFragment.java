@@ -240,6 +240,7 @@ public class FirstFragment extends Fragment {
 
                         // Show all data
                         showMessage("Data",buffer.toString());
+                        res.close();
                     }
                 }
         );
@@ -268,6 +269,7 @@ public class FirstFragment extends Fragment {
             tt.setText(res.getString(1));
             kt.setText(res.getString(3));
         }
+        res.close();
     }
     public void cekcontrol(){
         Cursor res = myDb.getLastDatac();
@@ -299,6 +301,7 @@ public class FirstFragment extends Fragment {
             kran.setChecked(true);
             krani.setImageResource(R.drawable.kran_on);
         }
+        res.close();
     }
 
 }

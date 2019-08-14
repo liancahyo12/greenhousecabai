@@ -71,8 +71,8 @@ public class SuhuFrag extends Fragment {
                     sdfsuhu=new SimpleDateFormat(  "HH, dd", Locale.getDefault());
                     resetsuhu();
                 }else if(tabLayout.getSelectedTabPosition() == 1){
-                    graphViewsuhu.getGridLabelRenderer().setNumHorizontalLabels(8);
-                    graphViewsuhu.getViewport().setMinX(xktanah0-6048);
+                    graphViewsuhu.getGridLabelRenderer().setNumHorizontalLabels(7);
+                    graphViewsuhu.getViewport().setMinX(xktanah0-6000);
                     legsj.setText("□ Suhu °C   □ Waktu Tanggal, Bulan");
                     sdfsuhu=new SimpleDateFormat(  "dd, MMM", Locale.getDefault());
                     resetsuhu();
@@ -116,6 +116,7 @@ public class SuhuFrag extends Fragment {
             cursor.moveToNext();
             dpsuhu[i]=new DataPoint(cursor.getLong(0)/100000,cursor.getInt(1));
         }
+        cursor.close();
         return dpsuhu;
     }
     public void chartkonf(){
@@ -149,6 +150,7 @@ public class SuhuFrag extends Fragment {
             xktanahx = res0.getLong(3) / 100000;
             // Do somethi
         }
+        res.close();
     }
     public void resetsuhu(){
         graphViewsuhu.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
